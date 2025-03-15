@@ -27,6 +27,7 @@ const Navbar = ({ setCategory, setSearchQuery }) => {
   };
 
   const navLinks = [
+    {label: "General", value:NewsCategories.GENERAL},
     { label: "Technology", value: NewsCategories.TECHNOLOGY },
     { label: "Business", value: NewsCategories.BUSINESS },
     { label: "Health", value: NewsCategories.HEALTH },
@@ -73,7 +74,9 @@ const Navbar = ({ setCategory, setSearchQuery }) => {
                   className={`nav-link ${
                     activeCategory === link.value ? "active" : ""
                   }`}
-                  onClick={() => handleCategoryChange(link?.value)}
+                  onClick={() =>
+                     handleCategoryChange(link?.value)
+                    }
                   style={{ cursor: "pointer" }}
                 >
                   {link?.label}
@@ -85,7 +88,7 @@ const Navbar = ({ setCategory, setSearchQuery }) => {
             <input
               className="form-control me-2"
               type="search"
-              placeholder="Search"
+              placeholder="Search any news"
               aria-label="Search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

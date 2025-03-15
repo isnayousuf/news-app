@@ -7,7 +7,8 @@ const NewsBoard = ({ category, searchQuery }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
-  
+  const [sortValue, setSortValue] = useState("publishedAt");
+
   
   const pageSize = 10;
   const apiKey = import.meta.env.VITE_API_KEY;
@@ -16,9 +17,10 @@ const NewsBoard = ({ category, searchQuery }) => {
     const fetchNews = async () => {
       setIsLoading(true);
       try {
-     let apiQuery = searchQuery
-       ? `everything?q=${searchQuery}&pageSize=${pageSize}&page=${currentPage}`
-       : `top-headlines?country=us&category=${category}&pageSize=${pageSize}&page=${currentPage}`;
+        let apiQuery = searchQuery
+          ? `everything?q=${searchQuery}&pageSize=${pageSize}&page=${currentPage}&sortBy=${sortValue}
+            `
+          : `top-headlines?country=us&category=${category}&pageSize=${pageSize}&page=${currentPage}&sortBy=${sortValue}`;
 
         let url = `https://newsapi.org/v2/${apiQuery}&apiKey=${apiKey}`;
         const response = await fetch(url);
@@ -26,10 +28,7 @@ const NewsBoard = ({ category, searchQuery }) => {
           throw new Error("Failed to fetch news");
         }
         const data = await response.json();
-        console.log("data", data);
-        console.log("Articles Received:", data.length);
-
-        setArticles(data.articles ?? []); 
+        setArticles(data.articles ?? []);
         setTotalCount(data.totalResults || 0);
       } catch (err) {
         console.error("Error fetching news:", err);
@@ -39,25 +38,45 @@ const NewsBoard = ({ category, searchQuery }) => {
     };
 
     fetchNews();
-  }, [category, searchQuery, currentPage]);
+  }, [category, searchQuery, currentPage, sortValue]);
 
   useEffect(() => {
     setCurrentPage(1); // Reset page when category or search changes
-  }, [category, searchQuery]);
+  }, [category, searchQuery, sortValue]);
 
 
-  console.log("totalCount",totalCount);
   const totalPages = getTotalNumberOfPages(totalCount);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  
+
   return (
-    <div className="pb-4">
-      <h2 className="text-center my-3">
-        Latest <span className="badge bg-danger">News</span>
-      </h2>
+    <div className="pb-4 container">
+      <div className="mt-3 d-flex justify-content-between">
+        <h2 className="text-center ">
+          Latest <span className="badge bg-danger">News</span>
+        </h2>
+        <div
+          className="d-flex align-items-center"
+        >
+          <p style={{ width: "100px" }}>Sort By:</p>
+          <select
+            className="form-select form-select-lg mb-3"
+            aria-label="Large select example"
+            onChange={(e) => {
+              setSortValue(e.target.value);
+            }}
+          >
+            <option value="publishedAt" selected>
+              Newest
+            </option>
+            <option value="popularity">Popularity</option>
+            <option value="relevance">Relevance</option>
+          </select>
+        </div>
+      </div>
+
       {isLoading ? (
         <div
           className="d-flex justify-content-center align-items-center"
@@ -68,7 +87,7 @@ const NewsBoard = ({ category, searchQuery }) => {
           </div>
         </div>
       ) : (
-        <div className="container">
+        <div>
           <div className="row">
             {articles?.map((news, index) => (
               <div className="col-12 col-md-6 col-lg-4 mb-4" key={index}>
@@ -85,7 +104,7 @@ const NewsBoard = ({ category, searchQuery }) => {
             ))}
           </div>
 
-          <div >
+          <div>
             <Pagination
               totalPages={totalPages}
               currentPage={currentPage}
