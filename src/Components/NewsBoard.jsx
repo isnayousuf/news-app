@@ -24,9 +24,12 @@ const NewsBoard = ({ category, searchQuery }) => {
             `
           : `top-headlines?country=us&category=${category}&pageSize=${pageSize}&page=${currentPage}&sortBy=${sortValue}`;
 
-        let url = `https://newsapi.org/v2/${apiQuery}&apiKey=${apiKey}`;
+        // let url = `https://newsapi.org/v2/${apiQuery}&apiKey=${apiKey}`;
+        let url = `https://newsdata.io/api/1/latest?apikey=${apiKey}`
         const response = await fetch(url);
         const data = await response.json();
+        console.log("data is", data);
+        
 
         if (data.status === "error") {
           if (data.code === "rateLimited") {
@@ -45,7 +48,8 @@ const NewsBoard = ({ category, searchQuery }) => {
           return;
         }
 
-        setArticles(data.articles ?? []);
+        // setArticles(data.articles ?? []);
+          setArticles(data.results ?? []);
         setTotalCount(data.totalResults || 0);
       } catch (err) {
         console.error("Error fetching news:", err);
