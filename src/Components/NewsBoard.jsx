@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import NewsItem from "./NewsItem";
-
 const NewsBoard = ({ category, searchQuery }) => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const apiKey = import.meta.env.VITE_API_KEY;
-
-  console.log("searchQuerys",searchQuery);
-  
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -34,6 +30,9 @@ const NewsBoard = ({ category, searchQuery }) => {
     fetchNews();
   }, [category, searchQuery]);
 
+  console.log("articles", articles);
+  
+
   return (
     <div>
       <h2 className="text-center">
@@ -49,16 +48,23 @@ const NewsBoard = ({ category, searchQuery }) => {
           </div>
         </div>
       ) : (
-        <div className="d-flex justify-content-center flex-wrap">
-          {articles?.map((news, index) => (
-            <NewsItem
-              key={index}
-              articles={news?.title}
-              description={news?.description}
-              imgSrc={news?.urlToImage}
-              readMoreUrl={news?.url}
-            />
-          ))}
+        <div className="container text-center">
+          <div className="row">
+            {articles?.map((news, index) => (
+              <div className="col-12 col-md-6 col-lg-4 mb-4">
+                <NewsItem
+                  key={index}
+                  newsTitle={news?.title}
+                  description={news?.description}
+                  imgSrc={news?.urlToImage}
+                  newsUrl={news?.url}
+                  author={news?.author}
+                  source={news?.source}
+                  publishedAt={news?.publishedAt}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

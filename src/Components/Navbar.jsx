@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { debounce } from "lodash";
+
+import { useCallback, useState } from "react";
 
 const Navbar = ({ setCategory, setSearchQuery }) => {
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [searchTerm, setSearchTerm] = useState('')
+  const debounceSearch = useCallback(
+    debounce((query) => {
+      setSearchQuery(query);
+    }, 500),
+    []
+  );
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim() !== "") {
-      setSearchQuery(searchTerm); 
+      debounceSearch(searchTerm);
     }
   };
-  
+
   return (
     <nav
       className="navbar navbar-expand-lg bg-body-tertiary"

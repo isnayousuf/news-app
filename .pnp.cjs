@@ -35,6 +35,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-hooks", "virtual:ccfb4207744477e97eb389902409e96c62d2feea5e6f0111f66b2587dac2529e6c6c48c1e3a5c8402741c1becff4c299437a13f0f9c495317cd1286c50bb7342#npm:5.2.0"],\
           ["eslint-plugin-react-refresh", "virtual:ccfb4207744477e97eb389902409e96c62d2feea5e6f0111f66b2587dac2529e6c6c48c1e3a5c8402741c1becff4c299437a13f0f9c495317cd1286c50bb7342#npm:0.4.19"],\
           ["globals", "npm:15.15.0"],\
+          ["lodash", "npm:4.17.21"],\
           ["react", "npm:19.0.0"],\
           ["react-dom", "virtual:ccfb4207744477e97eb389902409e96c62d2feea5e6f0111f66b2587dac2529e6c6c48c1e3a5c8402741c1becff4c299437a13f0f9c495317cd1286c50bb7342#npm:19.0.0"],\
           ["vite", "virtual:ccfb4207744477e97eb389902409e96c62d2feea5e6f0111f66b2587dac2529e6c6c48c1e3a5c8402741c1becff4c299437a13f0f9c495317cd1286c50bb7342#npm:6.2.2"]\
@@ -2123,6 +2124,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["lodash", [\
+      ["npm:4.17.21", {\
+        "packageLocation": "../../../../.yarn/berry/cache/lodash-npm-4.17.21-6382451519-10c0.zip/node_modules/lodash/",\
+        "packageDependencies": [\
+          ["lodash", "npm:4.17.21"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["lodash.merge", [\
       ["npm:4.6.2", {\
         "packageLocation": "../../../../.yarn/berry/cache/lodash.merge-npm-4.6.2-77cb4416bf-10c0.zip/node_modules/lodash.merge/",\
@@ -2327,6 +2337,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-hooks", "virtual:ccfb4207744477e97eb389902409e96c62d2feea5e6f0111f66b2587dac2529e6c6c48c1e3a5c8402741c1becff4c299437a13f0f9c495317cd1286c50bb7342#npm:5.2.0"],\
           ["eslint-plugin-react-refresh", "virtual:ccfb4207744477e97eb389902409e96c62d2feea5e6f0111f66b2587dac2529e6c6c48c1e3a5c8402741c1becff4c299437a13f0f9c495317cd1286c50bb7342#npm:0.4.19"],\
           ["globals", "npm:15.15.0"],\
+          ["lodash", "npm:4.17.21"],\
           ["react", "npm:19.0.0"],\
           ["react-dom", "virtual:ccfb4207744477e97eb389902409e96c62d2feea5e6f0111f66b2587dac2529e6c6c48c1e3a5c8402741c1becff4c299437a13f0f9c495317cd1286c50bb7342#npm:19.0.0"],\
           ["vite", "virtual:ccfb4207744477e97eb389902409e96c62d2feea5e6f0111f66b2587dac2529e6c6c48c1e3a5c8402741c1becff4c299437a13f0f9c495317cd1286c50bb7342#npm:6.2.2"]\
