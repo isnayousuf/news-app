@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
+import { getTotalNumberOfPages } from "../utils";
 import NewsItem from "./NewsItem";
+import Pagination from "./Pagination";
 const NewsBoard = ({ category, searchQuery }) => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  
+  
+  const pageSize = 10;
   const apiKey = import.meta.env.VITE_API_KEY;
 
   useEffect(() => {
     const fetchNews = async () => {
       setIsLoading(true);
       try {
-        let apiQuery = searchQuery
-          ? `everything?q=${searchQuery}`
-          : `top-headlines?country=us&category=${category}`;
+     let apiQuery = searchQuery
+       ? `everything?q=${searchQuery}&pageSize=${pageSize}&page=${currentPage}`
+       : `top-headlines?country=us&category=${category}&pageSize=${pageSize}&page=${currentPage}`;
 
         let url = `https://newsapi.org/v2/${apiQuery}&apiKey=${apiKey}`;
         const response = await fetch(url);
@@ -19,7 +26,11 @@ const NewsBoard = ({ category, searchQuery }) => {
           throw new Error("Failed to fetch news");
         }
         const data = await response.json();
-        setArticles(data?.articles);
+        console.log("data", data);
+        console.log("Articles Received:", data.length);
+
+        setArticles(data.articles ?? []); 
+        setTotalCount(data.totalResults || 0);
       } catch (err) {
         console.error("Error fetching news:", err);
       } finally {
@@ -28,10 +39,22 @@ const NewsBoard = ({ category, searchQuery }) => {
     };
 
     fetchNews();
+  }, [category, searchQuery, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1); // Reset page when category or search changes
   }, [category, searchQuery]);
 
+
+  console.log("totalCount",totalCount);
+  const totalPages = getTotalNumberOfPages(totalCount);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  
   return (
-    <div>
+    <div className="pb-4">
       <h2 className="text-center my-3">
         Latest <span className="badge bg-danger">News</span>
       </h2>
@@ -60,6 +83,14 @@ const NewsBoard = ({ category, searchQuery }) => {
                 />
               </div>
             ))}
+          </div>
+
+          <div >
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
       )}

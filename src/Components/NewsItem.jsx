@@ -8,8 +8,6 @@ export const NewsItem = ({
   source,
   publishedAt,
 }) => {
-
-  console.log("publishedAt", publishedAt, "source", source, "title", newsTitle);
   
   return (
     <div
