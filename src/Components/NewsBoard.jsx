@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getTotalNumberOfPages } from "../utils";
 import NewsItem from "./NewsItem";
 import Pagination from "./Pagination";
@@ -9,6 +10,7 @@ const NewsBoard = ({ category, searchQuery }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [sortValue, setSortValue] = useState("publishedAt");
 
+  const navigate = useNavigate(); 
   
   const pageSize = 10;
   const apiKey = import.meta.env.VITE_API_KEY;
@@ -24,10 +26,25 @@ const NewsBoard = ({ category, searchQuery }) => {
 
         let url = `https://newsapi.org/v2/${apiQuery}&apiKey=${apiKey}`;
         const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Failed to fetch news");
-        }
         const data = await response.json();
+
+        if (data.status === "error") {
+          if (data.code === "rateLimited") {
+            navigate("/rate-limit"); 
+          } else if (
+            data.code === "apiKeyMissing" ||
+            data.code === "apiKeyDisabled" ||
+            data.code === "apiKeyExhausted" ||
+            data.code === "apiKeyInvalid"
+          ) {
+             navigate("page-not-found"); 
+          } else {
+            console.error("This is why the page is empty", data);
+            
+          }
+          return;
+        }
+
         setArticles(data.articles ?? []);
         setTotalCount(data.totalResults || 0);
       } catch (err) {
@@ -41,9 +58,8 @@ const NewsBoard = ({ category, searchQuery }) => {
   }, [category, searchQuery, currentPage, sortValue]);
 
   useEffect(() => {
-    setCurrentPage(1); // Reset page when category or search changes
+    setCurrentPage(1); 
   }, [category, searchQuery, sortValue]);
-
 
   const totalPages = getTotalNumberOfPages(totalCount);
 
@@ -57,9 +73,7 @@ const NewsBoard = ({ category, searchQuery }) => {
         <h2 className="text-center ">
           Latest <span className="badge bg-danger">News</span>
         </h2>
-        <div
-          className="d-flex align-items-center"
-        >
+        <div className="d-flex align-items-center">
           <p style={{ width: "100px" }}>Sort By:</p>
           <select
             className="form-select form-select-lg mb-3"
