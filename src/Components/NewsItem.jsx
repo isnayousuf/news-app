@@ -3,7 +3,7 @@ export const NewsItem = ({title, description, imageSrc, newsUrl}) => {
   return (
     <div
       className="card bg-dark text-light d-inline-block my-3 mx-3 px-2 py-2"
-      style={{ minWidth: "340px", maxWidth: "345px", height: "400px" }} // Fixed height for all cards
+      style={{ minWidth: "340px", maxWidth: "345px", height: "400px" }} 
     >
       <div>Hello</div>
       <img

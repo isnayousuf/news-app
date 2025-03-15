@@ -1,4 +1,16 @@
-const Navbar = ({setCategory}) => {
+import { useState } from "react";
+
+const Navbar = ({ setCategory, setSearchQuery }) => {
+
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim() !== "") {
+      setSearchQuery(searchTerm); 
+    }
+  };
+  
   return (
     <nav
       className="navbar navbar-expand-lg bg-body-tertiary"
@@ -93,12 +105,15 @@ const Navbar = ({setCategory}) => {
               <div></div>
             </li>
           </ul>
-          <form className="d-flex" role="search">
+          <form className="d-flex" role="search" onSubmit={handleSearch}>
             <input
               className="form-control me-2"
               type="search"
               placeholder="Search"
               aria-label="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onBlur={() => setSearchQuery(searchTerm)}
             />
             <button className="btn btn-outline-success" type="submit">
               Search
