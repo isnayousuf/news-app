@@ -38,14 +38,14 @@ useEffect(() => {
       {isLoading ? (
         <div
           className="d-flex justify-content-center align-items-center"
-          style={{minHeight: "85vh" }}
+          style={{ minHeight: "85vh" }}
         >
           <div class="spinner-border text-danger" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
         </div>
       ) : (
-        <div className="container">
+        <div className="d-flex justify-content-center flex-wrap">
           {articles?.map((news, index) => (
             <NewsItem
               key={index}
