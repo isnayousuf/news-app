@@ -30,12 +30,9 @@ const NewsBoard = ({ category, searchQuery }) => {
     fetchNews();
   }, [category, searchQuery]);
 
-  console.log("articles", articles);
-  
-
   return (
     <div>
-      <h2 className="text-center">
+      <h2 className="text-center my-3">
         Latest <span className="badge bg-danger">News</span>
       </h2>
       {isLoading ? (
@@ -48,12 +45,11 @@ const NewsBoard = ({ category, searchQuery }) => {
           </div>
         </div>
       ) : (
-        <div className="container text-center">
+        <div className="container">
           <div className="row">
             {articles?.map((news, index) => (
-              <div className="col-12 col-md-6 col-lg-4 mb-4">
+              <div className="col-12 col-md-6 col-lg-4 mb-4" key={index}>
                 <NewsItem
-                  key={index}
                   newsTitle={news?.title}
                   description={news?.description}
                   imgSrc={news?.urlToImage}

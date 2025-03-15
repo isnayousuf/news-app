@@ -1,9 +1,11 @@
 import { debounce } from "lodash";
+import { NewsCategories } from "../constants";
 
 import { useCallback, useState } from "react";
 
 const Navbar = ({ setCategory, setSearchQuery }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeCategory, setActiveCategory] = useState(NewsCategories.GENERAL); 
 
   const debounceSearch = useCallback(
     debounce((query) => {
@@ -19,15 +21,39 @@ const Navbar = ({ setCategory, setSearchQuery }) => {
     }
   };
 
+  const handleCategoryChange = (newValue) => {
+    setCategory(newValue);
+    setActiveCategory(newValue)
+  };
+
+  const navLinks = [
+    { label: "Technology", value: NewsCategories.TECHNOLOGY },
+    { label: "Business", value: NewsCategories.BUSINESS },
+    { label: "Health", value: NewsCategories.HEALTH },
+    { label: "Science", value: NewsCategories.SCIENCE },
+    { label: "Sports", value: NewsCategories.SPORTS },
+    { label: "Entertainment", value: NewsCategories.ENTERTAINMENT },
+  ];
+
   return (
     <nav
       className="navbar navbar-expand-lg bg-body-tertiary"
       data-bs-theme="dark"
     >
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-          <span className="badge bg-light text-dark fs-4">News App</span>
+        <a
+          style={{
+            fontWeight: "800",
+            fontSize: "1.8rem",
+            letterSpacing: "2px",
+            fontFamily: "'Merriweather', serif",
+          }}
+          className="navbar-brand text-uppercase fw-bold d-flex align-items-center"
+          href="#"
+        >
+          NEWS APP
         </a>
+
         <button
           className="navbar-toggler"
           type="button"
@@ -41,77 +67,19 @@ const Navbar = ({ setCategory, setSearchQuery }) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <div
-                className="nav-link"
-                onClick={() => {
-                  setCategory("technology");
-                }}
-              >
-                tech
-              </div>
-              <div></div>
-            </li>
-
-            <li className="nav-item">
-              <div
-                className="nav-link"
-                onClick={() => {
-                  setCategory("business");
-                }}
-              >
-                business
-              </div>
-              <div></div>
-            </li>
-
-            <li className="nav-item">
-              <div
-                className="nav-link"
-                onClick={() => {
-                  setCategory("health");
-                }}
-              >
-                health
-              </div>
-              <div></div>
-            </li>
-
-            <li className="nav-item">
-              <div
-                className="nav-link"
-                onClick={() => {
-                  setCategory("science");
-                }}
-              >
-                Science
-              </div>
-              <div></div>
-            </li>
-
-            <li className="nav-item">
-              <div
-                className="nav-link"
-                onClick={() => {
-                  setCategory("sports");
-                }}
-              >
-                Sports
-              </div>
-              <div></div>
-            </li>
-
-            <li className="nav-item">
-              <div
-                className="nav-link"
-                onClick={() => {
-                  setCategory("entertainment");
-                }}
-              >
-                Entertainment
-              </div>
-              <div></div>
-            </li>
+            {navLinks?.map((link, index) => (
+              <li className="nav-item" key={index}>
+                <div
+                  className={`nav-link ${
+                    activeCategory === link.value ? "active" : ""
+                  }`}
+                  onClick={() => handleCategoryChange(link?.value)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {link?.label}
+                </div>
+              </li>
+            ))}
           </ul>
           <form className="d-flex" role="search" onSubmit={handleSearch}>
             <input
@@ -123,7 +91,7 @@ const Navbar = ({ setCategory, setSearchQuery }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
               onBlur={() => setSearchQuery(searchTerm)}
             />
-            <button className="btn btn-outline-success" type="submit">
+            <button className="btn btn-outline-primary" type="submit">
               Search
             </button>
           </form>
