@@ -1,75 +1,80 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTotalNumberOfPages } from "../utils";
+import { countries, languages } from "../data";
+import CustomDropdown from "./Dropdown";
 import NewsItem from "./NewsItem";
 import Pagination from "./Pagination";
-const NewsBoard = ({ category, searchQuery }) => {
+import SearchBar from "./SearchBar";
+const NewsBoard = ({ category }) => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [totalCount, setTotalCount] = useState(0)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [sortValue, setSortValue] = useState("publishedAt");
+  const [countryFilter, setCountryFilter] = useState(["in"]);
+  const [languageFilter, setLanguageFilter] = useState(["en"]);
+  const [nextPage, setNextPage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate(); 
   
   const pageSize = 10;
   const apiKey = import.meta.env.VITE_API_KEY;
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      setIsLoading(true);
-      try {
-        let apiQuery = searchQuery
-          ? `everything?q=${searchQuery}&pageSize=${pageSize}&page=${currentPage}&sortBy=${sortValue}
-            `
-          : `top-headlines?country=us&category=${category}&pageSize=${pageSize}&page=${currentPage}&sortBy=${sortValue}`;
+  const fetchNews = async () => {
+    setIsLoading(true);
+    try {
+      let url = `https://newsdata.io/api/1/latest?apikey=${apiKey}&category=${category}`;
 
-        // let url = `https://newsapi.org/v2/${apiQuery}&apiKey=${apiKey}`;
-        let url = `https://newsdata.io/api/1/latest?apikey=${apiKey}`
-        const response = await fetch(url);
-        const data = await response.json();
-        console.log("data is", data);
-        
-
-        if (data.status === "error") {
-          if (data.code === "rateLimited") {
-            navigate("/rate-limit"); 
-          } else if (
-            data.code === "apiKeyMissing" ||
-            data.code === "apiKeyDisabled" ||
-            data.code === "apiKeyExhausted" ||
-            data.code === "apiKeyInvalid"
-          ) {
-             navigate("page-not-found"); 
-          } else {
-            console.error("This is why the page is empty", data);
-            
-          }
-          return;
-        }
-
-        // setArticles(data.articles ?? []);
-          setArticles(data.results ?? []);
-        setTotalCount(data.totalResults || 0);
-      } catch (err) {
-        console.error("Error fetching news:", err);
-      } finally {
-        setIsLoading(false);
+      if (searchQuery) {
+         url += `&q=${searchQuery}`;
       }
-    };
 
-    fetchNews();
-  }, [category, searchQuery, currentPage, sortValue]);
+      if (countryFilter.length > 0) {
+        url += `&country=${countryFilter.join(",")}`;
+      }
+      if (languageFilter.length > 0) {
+        url += `&language=${languageFilter.join(",")}`;
+      }
+      if (nextPage) {
+        url += `&size=${pageSize}&page=${nextPage}`;
+      }
+      
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log("data is", data);
 
-  useEffect(() => {
-    setCurrentPage(1); 
-  }, [category, searchQuery, sortValue]);
+      if (data.status === "error") {
+        if (data.code === "rateLimited") {
+          navigate("/rate-limit");
+        } else if (
+          [
+            "apiKeyMissing",
+            "apiKeyDisabled",
+            "apiKeyExhausted",
+            "apiKeyInvalid",
+          ].includes(data.code)
+        ) {
+          navigate("/page-not-found");
+        } else {
+          console.error("This is why the page is empty", data);
+        }
+        return;
+      }
 
-  const totalPages = getTotalNumberOfPages(totalCount);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+      setArticles(data.results ?? []);
+      setNextPage(data?.nextPage || "");
+    } catch (err) {
+      console.error("Error fetching news:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
+  useEffect(() => {
+   
+    fetchNews();
+    
+  }, [category,
+      searchQuery,
+      countryFilter,
+      languageFilter]);
 
   return (
     <div className="pb-4 container">
@@ -78,20 +83,39 @@ const NewsBoard = ({ category, searchQuery }) => {
           Latest <span className="badge bg-danger">News</span>
         </h2>
         <div className="d-flex align-items-center">
-          <p style={{ width: "100px" }}>Sort By:</p>
-          <select
-            className="form-select form-select-lg mb-3"
-            aria-label="Large select example"
-            onChange={(e) => {
-              setSortValue(e.target.value);
-            }}
-          >
-            <option value="publishedAt" selected>
-              Newest
-            </option>
-            <option value="popularity">Popularity</option>
-            <option value="relevance">Relevance</option>
-          </select>
+          <SearchBar setSearchQuery={setSearchQuery} />
+        </div>
+      </div>
+
+      <div className="d-flex align-items-center justify-content-between">
+        <div
+          className="mb-3 "
+          style={{
+            width: "45%",
+          }}
+        >
+          <label htmlFor="country-dropdown">Filter News by Country</label>
+          <CustomDropdown
+            selectedValue={countryFilter}
+            setSelectedValue={setCountryFilter}
+            data={countries}
+            multiple={true}
+          />
+        </div>
+
+        <div
+          className="mb-3"
+          style={{
+            width: "45%",
+          }}
+        >
+          <label htmlFor="country-dropdown">Filter News by Language</label>
+          <CustomDropdown
+            selectedValue={languageFilter}
+            setSelectedValue={setLanguageFilter}
+            data={languages}
+            multiple={true}
+          />
         </div>
       </div>
 
@@ -124,9 +148,9 @@ const NewsBoard = ({ category, searchQuery }) => {
 
           <div>
             <Pagination
-              totalPages={totalPages}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
+              nextPage={nextPage}
+              onNext={() => fetchNews()}
+              onPrevious={() => setNextPage("")}
             />
           </div>
         </div>

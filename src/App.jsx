@@ -6,16 +6,18 @@ import Navbar from "./Components/Navbar";
 import NewsBoard from "./Components/NewsBoard";
 import { NewsCategories } from "./constants";
 const App = () => {
-  const [category, setCategory] = useState(NewsCategories.GENERAL);
-
-  const [searchQuery, setSearchQuery] = useState("");
+  const [category, setCategory] = useState(NewsCategories.TOP);
   return (
     <Router>
-      <Navbar setCategory={setCategory} setSearchQuery={setSearchQuery} />
+      <Navbar setCategory={setCategory} />
       <Routes>
         <Route
           path="/"
-          element={<NewsBoard category={category} searchQuery={searchQuery} />}
+          element={
+            <NewsBoard
+              category={category}
+            />
+          }
         />
         <Route path="rate-limit" element={<RateLimit />} />
         <Route path="page-not-found" element={<PageNotFound />} />

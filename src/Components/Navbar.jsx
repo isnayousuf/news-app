@@ -1,25 +1,9 @@
-import { debounce } from "lodash";
 import { NewsCategories } from "../constants";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
-const Navbar = ({ setCategory, setSearchQuery }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [activeCategory, setActiveCategory] = useState(NewsCategories.GENERAL); 
-
-  const debounceSearch = useCallback(
-    debounce((query) => {
-      setSearchQuery(query);
-    }, 500),
-    []
-  );
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim() !== "") {
-      debounceSearch(searchTerm);
-    }
-  };
+const Navbar = ({ setCategory }) => {
+  const [activeCategory, setActiveCategory] = useState(NewsCategories.TOP); 
 
   const handleCategoryChange = (newValue) => {
     setCategory(newValue);
@@ -27,14 +11,24 @@ const Navbar = ({ setCategory, setSearchQuery }) => {
   };
 
   const navLinks = [
-    {label: "General", value:NewsCategories.GENERAL},
+    { label: "Top", value: NewsCategories.TOP },
     { label: "Technology", value: NewsCategories.TECHNOLOGY },
     { label: "Business", value: NewsCategories.BUSINESS },
     { label: "Health", value: NewsCategories.HEALTH },
     { label: "Science", value: NewsCategories.SCIENCE },
     { label: "Sports", value: NewsCategories.SPORTS },
     { label: "Entertainment", value: NewsCategories.ENTERTAINMENT },
+    { label: "Crime", value: NewsCategories.CRIME },
+    { label: "Domestic", value: NewsCategories.DOMESTIC },
+    { label: "Education", value: NewsCategories.EDUCATION },
+    { label: "Environment", value: NewsCategories.ENVIRONMENT },
+    { label: "Food", value: NewsCategories.FOOD },
+    { label: "Lifestyle", value: NewsCategories.LIFESTYLE },
+    { label: "Politics", value: NewsCategories.POLITICS },
+    { label: "Tourism", value: NewsCategories.TOURISM },
+    { label: "World", value: NewsCategories.WORLD },
   ];
+  
 
   return (
     <nav
@@ -84,20 +78,7 @@ const Navbar = ({ setCategory, setSearchQuery }) => {
               </li>
             ))}
           </ul>
-          <form className="d-flex" role="search" onSubmit={handleSearch}>
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search any news"
-              aria-label="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onBlur={() => setSearchQuery(searchTerm)}
-            />
-            <button className="btn btn-outline-primary" type="submit">
-              Search
-            </button>
-          </form>
+         
         </div>
       </div>
     </nav>
