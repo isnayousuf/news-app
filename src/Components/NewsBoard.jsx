@@ -39,7 +39,6 @@ const NewsBoard = ({ category }) => {
       
       const response = await fetch(url);
       const data = await response.json();
-      console.log("data is", data);
 
       if (data.status === "error") {
         if (data.code === "rateLimited") {
@@ -132,15 +131,17 @@ const NewsBoard = ({ category }) => {
         <div>
           <div className="row">
             {articles?.map((news, index) => (
-              <div className="col-12 col-md-6 col-lg-4 mb-4" key={index}>
+              <div
+                className="col-12 col-md-6 col-lg-4 mb-4"
+                key={news?.article_id}
+              >
                 <NewsItem
                   newsTitle={news?.title}
                   description={news?.description}
-                  imgSrc={news?.urlToImage}
-                  newsUrl={news?.url}
-                  author={news?.author}
-                  source={news?.source}
-                  publishedAt={news?.publishedAt}
+                  imgSrc={news?.image_url}
+                  newsUrl={news?.link}
+                  sourceName={news?.source_name}
+                  publishedAt={news?.pubDate}
                 />
               </div>
             ))}

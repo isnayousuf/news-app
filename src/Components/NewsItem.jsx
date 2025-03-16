@@ -5,10 +5,9 @@ export const NewsItem = ({
   imageSrc,
   newsUrl,
   author,
-  source,
+  sourceName,
   publishedAt,
 }) => {
-  
   return (
     <div
       className="card px-3 py-3 shadow-lg rounded"
@@ -41,7 +40,7 @@ export const NewsItem = ({
         <h6 className="card-title  fw-bold mb-1">{newsTitle?.slice(0, 50)}</h6>
 
         <small className="d-block mb-1">
-          {author ? `By ${author}` : "Unknown Author"} | {source?.name}
+           From {sourceName}
         </small>
 
         <small className="d-block mb-2">
