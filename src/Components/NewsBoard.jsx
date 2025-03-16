@@ -77,21 +77,17 @@ const NewsBoard = ({ category }) => {
 
   return (
     <div className="pb-4 container">
-      <div className="mt-3 d-flex justify-content-between">
-        <h2 className="text-center ">
+      <div className="mt-3 d-block d-lg-flex justify-content-between">
+        <h2 className="text-left text-lg-center ">
           Latest <span className="badge bg-danger">News</span>
         </h2>
-        <div className="d-flex align-items-center">
+        <div className="d-flex my-3 my-lg-0 align-items-center">
           <SearchBar setSearchQuery={setSearchQuery} />
         </div>
       </div>
 
-      <div className="d-flex align-items-center justify-content-between">
         <div
-          className="mb-3 "
-          style={{
-            width: "45%",
-          }}
+          className="mb-3"
         >
           <label htmlFor="country-dropdown">Filter News by Country</label>
           <CustomDropdown
@@ -104,9 +100,7 @@ const NewsBoard = ({ category }) => {
 
         <div
           className="mb-3"
-          style={{
-            width: "45%",
-          }}
+
         >
           <label htmlFor="country-dropdown">Filter News by Language</label>
           <CustomDropdown
@@ -116,7 +110,7 @@ const NewsBoard = ({ category }) => {
             multiple={true}
           />
         </div>
-      </div>
+      
 
       {isLoading ? (
         <div

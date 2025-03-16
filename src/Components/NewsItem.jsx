@@ -12,7 +12,7 @@ export const NewsItem = ({
     <div
       className="card px-3 py-3 shadow-lg rounded"
       style={{
-        minWidth: "390px",
+        minWidth: "200px",
         maxWidth: "400px",
         height: "490px",
         transition: "transform 0.3s ease, box-shadow 0.3s ease",
@@ -74,17 +74,17 @@ export const NewsItem = ({
 
         <a
           href={newsUrl}
-          className="btn btn-outline-primary mt-auto fw-bold"
+          className="btn btn-outline-dark mt-auto fw-bold"
           style={{
             transition: "background-color 0.3s ease, color 0.3s ease",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#0d6efd";
+            e.currentTarget.style.backgroundColor = "#301f1a";
             e.currentTarget.style.color = "#fff";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = "transparent";
-            e.currentTarget.style.color = "#0d6efd";
+            e.currentTarget.style.color = "#301f1a";
           }}
         >
           Read More

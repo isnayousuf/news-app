@@ -4,7 +4,7 @@ const Pagination = ({ nextPage, onNext, onPrevious }) => {
       <ul className="pagination">
         <li className={`page-item ${!nextPage ? "disabled" : ""}`}>
           <button
-            className="page-link"
+            className="page-link text-dark"
             onClick={onPrevious}
             disabled={!nextPage}
           >
@@ -13,7 +13,11 @@ const Pagination = ({ nextPage, onNext, onPrevious }) => {
         </li>
 
         <li className={`page-item ${!nextPage ? "disabled" : ""}`}>
-          <button className="page-link" onClick={onNext} disabled={!nextPage}>
+          <button
+            className="page-link text-dark"
+            onClick={onNext}
+            disabled={!nextPage}
+          >
             Next
           </button>
         </li>

@@ -19,7 +19,7 @@ const SearchBar = ({setSearchQuery}) => {
     };
   
   return (
-    <div>
+    <div className="w-100"> 
       <form className="d-flex" role="search" onSubmit={handleSearch}>
         <input
           className="form-control me-2"
@@ -30,7 +30,7 @@ const SearchBar = ({setSearchQuery}) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           onBlur={() => setSearchQuery(searchTerm)}
         />
-        <button className="btn btn-outline-primary" type="submit">
+        <button className="btn btn-outline-dark" type="submit">
           Search
         </button>
       </form>
